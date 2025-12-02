@@ -59,12 +59,6 @@ def main():
     ref_cam_id = 0
     zero_pad = 3
 
-    # if 'tps' in args.interframe_solver_choice:
-    #     cp_setting = args.interframe_solver_choice.split('+')[-1]
-    #     voxel_size = float(cp_setting.split('v')[1].split('e')[0])
-    #     max_project_error_rate = float(cp_setting.split('e')[1])
-    #     print(f"Using TPS inter-frame solver, voxel size: {voxel_size}, max projection error rate: {max_project_error_rate}")
-    # else:
     voxel_size_ratio = 0.05
     projection_error_ratio = 0.05
     max_loops = args.max_loops * cam_num  

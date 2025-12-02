@@ -428,11 +428,8 @@ class Solver:
                     if len(new_control_points_idx) == 0 or not self.backward_cps:
                         break
                 # print(colored(f"stop backward at submap {submap_id} for {self.current_working_submap.get_id()} due to no control points", "yellow"))
-            
-        
         
 
-        # Add in loop closures if any were detected.
         for index, loop in enumerate(detected_loops):
             assert loop.query_submap_id == self.current_working_submap.get_id()
 
