@@ -175,6 +175,7 @@ skyseg.onnx
 Data/
 Save*/
 Not/
+Old/
 vggt/
 Pi3/
 *.onnx
