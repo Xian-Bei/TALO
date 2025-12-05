@@ -4,8 +4,8 @@
 
 * **01.12.2025 — Initial Release**
 
-  * We are still gradually removing redundant code and refining the implementation.
-  * More documentation and examples will be added soon.
+  * **We are still gradually removing redundant code and refining the implementation.**
+  * **More documentation and examples will be added soon.**
 
 
 # Installation
