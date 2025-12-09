@@ -1,12 +1,10 @@
 # TALO: Pushing 3D Vision Foundation Models Towards Globally Consistent Online Reconstruction
 
-# Updates
+<!-- # Updates
 
-* **01.12.2025 — Initial Release**
+* **01.12.2025 — Initial Release** -->
 
-  * **We are still gradually removing redundant code and refining the implementation.**
-  * **More documentation and examples will be added soon.**
-
+> *We are still gradually removing redundant code and refining the implementation. More documentation and examples will be added soon.*
 
 # Installation
 
@@ -34,6 +32,9 @@ TALO currently supports the following 3D Vision Foundation Models as interchange
 | **[Pi3](https://github.com/yyfz/Pi3)**                              | Clone the repo into the TALO directory (e.g., `TALO/Pi3/pi3`)                                                                                                |
 | **[MapAnything](https://github.com/facebookresearch/map-anything)** | Install `mapanything` as a package into the created `talo` conda environment  ([instructions](https://github.com/facebookresearch/map-anything?tab=readme-ov-file#installation)) |
 
+
+It is also easy to integrate more advanced 3DVFMs by only formatting the prediction as a python dictionary containing the following keys
+(see `VFMs_adaptor.py` for example implementations):
 * `"org_images"`
 * `"images"`
 * `"cam2world"`
@@ -41,9 +42,6 @@ TALO currently supports the following 3D Vision Foundation Models as interchange
 * `"world_points"`
 * `"world_points_conf"`
 
-
-It is also easy to integrate more by only formatting the prediction as a dictionary containing the following keys
-(see `VFMs_adaptor.py` for example implementations):
 
 # Dataset Preparation
 
@@ -97,6 +95,7 @@ scene_dir/
       ...
   intrinsic/
     FRONT.txt        # 3x3 matrix
+    ...
   lidar/
     000.bin
     ...
@@ -123,7 +122,7 @@ bash run.sh
 | `--interframe_solver_choice` | Choose from `{sim3, sl4, tps}`          |
 | `--submap_size`              | Number of frames per submap             |
 | `--cam_num`                  | Number of cameras to use                |
-| `--vis_map`                  | Enable incremental online visualization |
+<!-- | `--vis_map`                  | Enable incremental online visualization | -->
 
 
 # Visualization
@@ -133,13 +132,13 @@ TALO provides both online and offline visualization modes.
 
 ## 1. Incremental Online Visualization (viser)
 
-Enable online SLAM-style visualization by adding:
+Online **VGGT-SLAM** visualization by adding:
 
 ```
 --vis_map
 ```
 
-inside `run.sh` or your command.
+to `main.py` (inside `run.sh`).
 
 
 ## 2. Offline Full Visualization (Open3D)
@@ -150,16 +149,15 @@ Enable offline reconstruction visualization by adding:
 --vis
 ```
 
-to `eval_vis_pcd_traj.py` inside `run.sh`.
+to `eval_vis_pcd_traj.py` (inside `run.sh`).
 
 
 # Acknowledgements
-
-TALO is built upon the excellent [VGGT-SLAM](https://github.com/MIT-SPARK/VGGT-SLAM) system and integrates advanced 3D Vision Foundation Models, including
+To ensure fair comparisons between different submap alignment methods (SL4 from [VGGT-SLAM](https://github.com/MIT-SPARK/VGGT-SLAM) and Sim3 from [VGGT-Long](https://github.com/DengKaiCQ/VGGT-Long)), TALO is built upon the same framework (VGGT-SLAM) and extended to support multi-camera settings as well as additional 3D Vision Foundation Models (3DVFMs), including
 [VGGT](https://github.com/facebookresearch/vggt),
-[Pi3](https://github.com/yyfz/Pi3),
-[MapAnything](https://github.com/facebookresearch/map-anything),
-and others.
+[Pi3](https://github.com/yyfz/Pi3), and
+[MapAnything](https://github.com/facebookresearch/map-anything).
+All rights of these projects are fully reserved by their respective authors.
 
-We sincerely thank the authors and maintainers of these outstanding open-source projects.
-If you find TALO useful, please consider citing and starring our work, and supporting the projects that made it possible.
+We sincerely thank the authors and maintainers of these outstanding open-source projects. If you find TALO useful, please consider citing and starring our work, and supporting the projects that made it possible.
+
