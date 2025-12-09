@@ -10,7 +10,7 @@
 
 # Installation
 
-## 1. Install TALO
+## 1. Install TALO (Based on [VGGT-SLAM](https://github.com/MIT-SPARK/VGGT-SLAM))
 
 ```
 sudo apt-get install git python3-pip libboost-all-dev cmake gcc g++ unzip   # required by VGGT-SLAM
@@ -26,9 +26,13 @@ pip install -r requirements.txt
 
 ## 2. Install Additional 3D Vision Foundation Models (Optional)
 
-TALO supports the following 3D Vision Foundation Models (3DVFMs) as interchangeable backbones.
-It is also easy to integrate more by only formatting the prediction as a dictionary containing the following keys
-(see `VFMs_adaptor.py` for example implementations):
+TALO currently supports the following 3D Vision Foundation Models as interchangeable backbones.
+
+| Backbone                                                            | Installation                                                                                                                                                 |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **[VGGT](https://github.com/facebookresearch/vggt)**                | Already installed through VGGT-SLAM                                                                                                                          |
+| **[Pi3](https://github.com/yyfz/Pi3)**                              | Clone the repo into the TALO directory (e.g., `TALO/Pi3/pi3`)                                                                                                |
+| **[MapAnything](https://github.com/facebookresearch/map-anything)** | Install `mapanything` as a package into the created `talo` conda environment  ([instructions](https://github.com/facebookresearch/map-anything?tab=readme-ov-file#installation)) |
 
 * `"org_images"`
 * `"images"`
@@ -37,12 +41,9 @@ It is also easy to integrate more by only formatting the prediction as a diction
 * `"world_points"`
 * `"world_points_conf"`
 
-| Backbone                                                            | Installation                                                                                                                                                 |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **[VGGT](https://github.com/facebookresearch/vggt)**                | Already installed through VGGT-SLAM                                                                                                                          |
-| **[Pi3](https://github.com/yyfz/Pi3)**                              | Clone the repo into the TALO directory                                                                                                                       |
-| **[MapAnything](https://github.com/facebookresearch/map-anything)** | Install into this conda environment as a package ([official instructions](https://github.com/facebookresearch/map-anything?tab=readme-ov-file#installation)) |
 
+It is also easy to integrate more by only formatting the prediction as a dictionary containing the following keys
+(see `VFMs_adaptor.py` for example implementations):
 
 # Dataset Preparation
 
