@@ -152,14 +152,14 @@ Enable offline reconstruction visualization by adding:
 to `eval_vis_pcd_traj.py` (inside `run.sh`).
 
 ## Examples
-### Pi3 on Waymo
-![alt text](assets/pi3_31561.png)
-### Pi3 on nuScenes
-![alt text](assets/pi3_39.png)
 ### VGGT on Waymo
 ![alt text](assets/vggt_61.png)
 ### VGGT on nuScenes
 ![alt text](assets/vggt_94.png)
+### Pi3 on Waymo
+![alt text](assets/pi3_31561.png)
+### Pi3 on nuScenes
+![alt text](assets/pi3_39.png)
 
 # Acknowledgements
 To ensure fair comparisons between different submap alignment methods (SL4 from [VGGT-SLAM](https://github.com/MIT-SPARK/VGGT-SLAM) and Sim3 from [VGGT-Long](https://github.com/DengKaiCQ/VGGT-Long)), TALO is built upon the same framework (VGGT-SLAM) and extended to support multi-camera settings as well as additional 3D Vision Foundation Models (3DVFMs), including
