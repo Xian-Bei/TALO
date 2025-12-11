@@ -20,13 +20,13 @@ for dataset in ${dataset_ls[@]}; do
         data_root=Data/$dataset
         save_root=Save/$dataset
         scene_ls=(
-            # 183829460855609442
-            # 3156155872654629090
-            # 3461811179177118163
-            # 4058410353286511411
-            # 5200186706748209867
-            # 6104545334635651714
-            # 16345319168590318167
+            183829460855609442
+            3156155872654629090
+            3461811179177118163
+            4058410353286511411
+            5200186706748209867
+            6104545334635651714
+            16345319168590318167
 
         )
     fi
@@ -34,13 +34,13 @@ for dataset in ${dataset_ls[@]}; do
         data_root=Data/$dataset
         save_root=Save/$dataset
         scene_ls=(
-            # scene-0003
-            # scene-0012
-            # scene-0013
-            # scene-0036
-            # scene-0039
-            # scene-0092 
-            # scene-0094 
+            scene-0003
+            scene-0012
+            scene-0013
+            scene-0036
+            scene-0039
+            scene-0092 
+            scene-0094 
 
         )
     fi

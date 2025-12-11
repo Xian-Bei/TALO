@@ -112,12 +112,13 @@ scene_dir/
 To run the system on your own data, format it as follows:
 
 ```
-example_scene/
-  image/
-    cam0/
-      000.jpg
+custom_data
+  example_scene/
+    image/
+      cam0/
+        000.jpg
+        ...
       ...
-    ...
 ```
 
 Then run:
