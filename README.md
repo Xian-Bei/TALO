@@ -72,8 +72,8 @@ Download the full dataset:
 After downloading, convert datasets using our extraction scripts:
 
 ```
-python extract_waymo.py
-python extract_nuscenes.py
+python dataset/extract_waymo.py
+python dataset/extract_nuscenes.py
 ```
 
 > Note that parsing Waymo requires `waymo-open-dataset-tf-2-6-0`, which depends on older package versions (e.g., `NumPy 1.x`) and is not compatible with the TALO environment.
