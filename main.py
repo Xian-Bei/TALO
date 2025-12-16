@@ -3,6 +3,7 @@ import argparse
 import random
 import shutil
 
+import ipdb
 import numpy as np
 import torch
 from vggt_slam.solver import Solver
@@ -36,6 +37,7 @@ parser.add_argument("--backward_control_points", default=False, action="store_tr
 parser.add_argument("--filter_method", type=str, default="gaussian", choices=["mean", "gaussian", "robust", None, 'None'], help="Method for robust mean filtering of control points")
 parser.add_argument("--filter_k", type=int, default=32, help="Number of nearest neighbors to use for robust mean filtering of control points")
 parser.add_argument("--robust_mean_method", type=str, default='mad', choices=["mad", "std", None, 'None'], help="Method for robust mean filtering of control points")
+parser.add_argument("--disable_sky_mask", action="store_true")
 
 
 def main():
@@ -43,6 +45,7 @@ def main():
     Main function that wraps the entire pipeline of VGGT-SLAM.
     """
     args = parser.parse_args()
+    print("Using sky mask:", not args.disable_sky_mask)
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
     
@@ -100,7 +103,7 @@ def main():
             continue
         image_names_subset = [f"{args.data_folder}/image/{frame_id}.jpg" for frame_id in frame_ids]  # assuming each camera has the same number of images
 
-        predictions = solver.run_predictions(image_names_subset, model, max_loops=max_loops, frame_ids=frame_ids)
+        predictions = solver.run_predictions(image_names_subset, model, max_loops=max_loops, frame_ids=frame_ids, sky_mask=not args.disable_sky_mask)
 
         solver.add_points(predictions)
 

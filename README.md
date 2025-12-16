@@ -153,7 +153,7 @@ bash run.sh
 | `--interframe_solver_choice` | Choose from `{sim3, sl4, tps}`          |
 | `--submap_size`              | Number of frames per submap             |
 | `--cam_num`                  | Number of cameras to use                |
-<!-- | `--vis_map`                  | Enable incremental online visualization | -->
+| `--disable_sky_mask`         | Disable sky mask (e.g., for indoor scenes) |
 
 
 # Visualization

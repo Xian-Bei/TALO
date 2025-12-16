@@ -475,8 +475,8 @@ class Solver:
         pixel_coords = torch.stack((y_coords, x_coords), dim=1)
         return pixel_coords
 
-    def run_predictions(self, image_names, model, max_loops, frame_ids=None):
-        results = run_predictions(image_names, self.model, model)
+    def run_predictions(self, image_names, model, max_loops, frame_ids=None, sky_mask=False):
+        results = run_predictions(image_names, self.model, model, sky_mask=sky_mask)
         
         new_pcd_num = self.map.get_largest_key() + 1
         new_submap = Submap(new_pcd_num)

@@ -25,16 +25,16 @@ def initialize_model(args, device):
     return model
 
 
-def run_predictions(image_names, model_name, model):
+def run_predictions(image_names, model_name, model, sky_mask=False):
     if model_name == "VGGT":
-        results = run_VGGT(image_names, model)
+        results = run_VGGT(image_names, model, sky_mask)
     elif model_name == "Pi3":
-        results = run_Pi3(image_names, model)
+        results = run_Pi3(image_names, model, sky_mask)
     elif model_name == "MapAnything":
-        results = run_MapAnything(image_names, model)
+        results = run_MapAnything(image_names, model, sky_mask)
     return results
 
-def run_VGGT(image_names, model):
+def run_VGGT(image_names, model, sky_mask=False):
     results = {}
     from vggt.utils.load_fn import load_and_preprocess_images as load_images
     from vggt.utils.geometry import closed_form_inverse_se3
@@ -43,7 +43,6 @@ def run_VGGT(image_names, model):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     images = images.to(device)
     results['org_images'] = images
-    non_sky_mask_binary = apply_sky_segmentation(image_names, images.shape[-2:])  # (n, H, W)
     dtype = torch.bfloat16 if torch.cuda.get_device_capability()[0] >= 8 else torch.float16
     with torch.no_grad():
         with torch.cuda.amp.autocast(dtype=dtype):
@@ -53,13 +52,16 @@ def run_VGGT(image_names, model):
     results["cam2world"] = closed_form_inverse_se3(extrinsic.cpu().numpy().squeeze(0))
     results["intrinsic"] = intrinsic.cpu().numpy().squeeze(0)
     results['world_points'] = predictions["world_points"].cpu().numpy().squeeze(0)  # (S, H, W, 3)
-    results["world_points_conf"] = (non_sky_mask_binary * predictions["world_points_conf"].cpu().numpy().squeeze(0))
+    results["world_points_conf"] = predictions["world_points_conf"].cpu().numpy().squeeze(0)
+    if sky_mask:
+        non_sky_mask_binary = apply_sky_segmentation(image_names, images.shape[-2:])  # (n, H, W)
+        results["world_points_conf"] = (non_sky_mask_binary * results["world_points_conf"])
 
     return results
 
 
 
-def run_Pi3(image_names, model):
+def run_Pi3(image_names, model, sky_mask=False):
     results = {}
     from Pi3.pi3.utils.geometry import homogenize_points
     from third_party_codes.pi3_code import load_images_as_tensor as load_images, recover_focal_no_shift
@@ -68,7 +70,6 @@ def run_Pi3(image_names, model):
     images = images.to(device)
     results['org_images'] = images
     images = images[None]
-    non_sky_mask_binary = apply_sky_segmentation(image_names, images.shape[-2:])  # (n, H, W)
     dtype = torch.bfloat16 if torch.cuda.get_device_capability()[0] >= 8 else torch.float16
     with torch.no_grad():
         with torch.cuda.amp.autocast(dtype=dtype):
@@ -77,7 +78,9 @@ def run_Pi3(image_names, model):
     results['cam2world'] = cam2world.cpu().numpy() # (S, 4, 4)
     results['world_points'] = torch.einsum('nij, nhwj -> nhwi', cam2world, homogenize_points(predictions['local_points'][0]))[..., :3].cpu().numpy() # (S, H, W, 3)
     results['world_points_conf'] = torch.sigmoid(predictions['conf'][0,...,0]).cpu().numpy() # (S, H, W)
-    results["world_points_conf"] = non_sky_mask_binary * results["world_points_conf"]
+    if sky_mask:
+        non_sky_mask_binary = apply_sky_segmentation(image_names, images.shape[-2:])  # (n, H, W)
+        results["world_points_conf"] = non_sky_mask_binary * results["world_points_conf"]
     results["images"] = (images[0].permute(0, 2, 3, 1) * 255).cpu().numpy().astype(np.uint8)
 
 
@@ -110,11 +113,10 @@ def run_Pi3(image_names, model):
 
 
 
-def run_MapAnything(image_names, model):
+def run_MapAnything(image_names, model, sky_mask=False):
     from mapanything.utils.image import load_images
     device = "cuda" if torch.cuda.is_available() else "cpu"
     images = load_images(image_names)
-    non_sky_mask_binary = apply_sky_segmentation(image_names, images[0]['true_shape'][0].tolist())  # (n, H, W)
     predictions = model.infer(
         images,                            # Input views
         memory_efficient_inference=False, # Trades off speed for more views (up to 2000 views on 140 GB)
@@ -134,6 +136,8 @@ def run_MapAnything(image_names, model):
         "images": (torch.cat([pred["img_no_norm"] for pred in predictions], 0).cpu().numpy()*255).astype(np.uint8)                  # Denormalized input images for visualization (B, H, W, 3)
     }
     results['cam2world'] = np.linalg.inv(results['cam2world'][0]) @ results['cam2world'] # (S, 4, 4)
-    results["world_points_conf"] = non_sky_mask_binary * results["world_points_conf"]
+    if sky_mask:
+        non_sky_mask_binary = apply_sky_segmentation(image_names, images[0]['true_shape'][0].tolist())  # (n, H, W)
+        results["world_points_conf"] = non_sky_mask_binary * results["world_points_conf"]
 
     return results
