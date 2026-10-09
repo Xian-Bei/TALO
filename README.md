@@ -16,8 +16,8 @@
 
 ```
 sudo apt-get install git python3-pip libboost-all-dev cmake gcc g++ unzip   # required by VGGT-SLAM
-git clone https://github.com/TODO/talo
-cd talo
+git clone https://github.com/Xian-Bei/TALO
+cd TALO
 conda create -n talo python=3.11
 conda activate talo
 ./setup.sh   # installs third-party dependencies required by VGGT-SLAM 
